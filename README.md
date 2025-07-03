@@ -11,6 +11,10 @@ A terminal-based note manager with multi-user support, login, and simple note cr
 - ❌ Remove users
 - 📂 Data stored in `.json` and `.txt` files
 
+## Requirements
+- Python 3.7 or higher
+- Works on Windows, Linux, and macOS (a terminal with Unicode support is recommended)
+
 ## Project Structure
 MainFolder/
 - main.py #launch the application
