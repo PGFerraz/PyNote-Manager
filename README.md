@@ -12,7 +12,6 @@ A terminal-based note manager with multi-user support, login, and simple note cr
 - 📂 Data stored in `.json` and `.txt` files
 
 ## Project Structure
-
 MainFolder/
 - main.py #launch the application
 - userdata/ # Stores user data and note files
@@ -21,3 +20,9 @@ MainFolder/
 - mainpackage/__init__.py
 - main_package/i_module.py # Main interface and logic
 - main_package/use_module.py # User class and data handling
+
+## Notes
+- User passwords are currently stored in plain text (hashing coming soon).
+- No external libraries are used — fully built with Python's standard library.
+- This project was created as a way to practice and deepen my understanding of Python.
+- It helped me explore concepts such as file handling, object-oriented programming, modularization, and terminal UI design.
