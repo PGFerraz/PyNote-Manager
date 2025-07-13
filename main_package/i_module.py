@@ -92,7 +92,7 @@ def remove_user():
             break
         print('\nUsers Found:')
         for users in Use.ulist:
-            print(f'- {users['name']}', sep='\n')
+            print(f"- {users['name']}", sep='\n')
         duser = input('\nEnter Username -> ').strip()
         dpsw = input('Enter Password -> ').strip()
         if autentication(duser, dpsw):
