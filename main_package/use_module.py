@@ -18,6 +18,26 @@ class Use:
         self.age = 0
         self.password = 'Not'
 
+    def registrationGUI(self, username, age, password):
+        self.name = username
+        self.age = age
+        self.password = password
+
+        Use.ulist.append({
+            'name': self.name,
+            'age': self.age,
+            'password': self.password
+        })
+
+        os.makedirs(f'userdata\\{self.name}_data', exist_ok=True)
+        with open(f'userdata\\{self.name}_data\\{self.name}_main.txt', 'a') as f:
+            f.write(f'User {self.name} registered at : {time.ctime()}\n'
+                f'- Name : {self.name}\n'
+                f'- Age : {self.age}\n')
+
+        with open(r'userdata\\user.json', 'w') as f:
+            json.dump(Use.ulist, f, indent=4)
+
     def registration(self):
         self.name = input('Enter User Name -> ')
         self.age = input('Enter Your Age -> ')
