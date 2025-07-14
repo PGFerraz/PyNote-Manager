@@ -4,11 +4,13 @@ A terminal-based note manager with multi-user support, login, and simple note cr
 ## Features
 
 - ✅ User registration with secure password validation
-- 🔐 Login system with authentication
-- 📝 Create personal notes
-- 📖 View saved notes
-- 🗑️ Delete notes
 - ❌ Remove users
+- 🔐 Login system with authentication
+- 🧾 Note creation, reading and deletion
+- 💾 Notes stored per user in folders (JSON + .txt)
+- 🖥️ GUI built with Tkinter
+- 💻 Optional CLI (command-line interface)
+- 🪶 Lightweight and easy to use
 - 📂 Data stored in `.json` and `.txt` files
 
 ## Requirements
@@ -18,12 +20,14 @@ A terminal-based note manager with multi-user support, login, and simple note cr
 ## Project Structure
 MainFolder/
 - main.py #launch the application
+- main_gui.py # Launch GUI
 - userdata/ # Stores user data and note files
 - userdata/user.json # Registered users list
 - main_package/ # Core functionality modules
 - mainpackage/__init__.py
 - main_package/i_module.py # Main interface and logic
 - main_package/use_module.py # User class and data handling
+- main_package/gui_module.py # GUI interface (Tkinter)
 
 ## Notes
 - User passwords are currently stored in plain text (hashing coming soon).
