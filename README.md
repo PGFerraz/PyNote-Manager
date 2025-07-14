@@ -1,5 +1,5 @@
-# Terminal-note-Manager
-A terminal-based note manager with multi-user support, login, and simple note creation/viewing.
+# PyNote-Manager
+A simple and extensible Python application for creating and managing notes, with support for both command-line and graphical interfaces.
 
 ## Features
 
@@ -33,4 +33,4 @@ MainFolder/
 - User passwords are currently stored in plain text (hashing coming soon).
 - No external libraries are used — fully built with Python's standard library.
 - This project was created as a way to practice and deepen my understanding of Python.
-- It helped me explore concepts such as file handling, object-oriented programming, modularization, and terminal UI design.
+- It helped me explore concepts such as file handling, object-oriented programming, modularization, terminal UI and GUI design.
