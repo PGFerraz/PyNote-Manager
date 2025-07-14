@@ -35,6 +35,11 @@ class NoteManagerGui:
         button.grid(column=co, row=ro, sticky='n')
         return button
 
+    def update_listbox(self):
+        self.listbox.delete(0, END)
+        for user in Use.ulist:
+            self.listbox.insert(END, user['name'])
+
     def validation(self, username_var, age_var, password_var):
         username = username_var.get()
         age = age_var.get()
@@ -49,6 +54,7 @@ class NoteManagerGui:
             age_var.set('')
             password_var.set('')
             self.show_menu(self.main_menu_frame)
+            self.update_listbox()
         else:
             username_var.set('')
             age_var.set('')
@@ -100,11 +106,8 @@ class NoteManagerGui:
             lambda: self.validation(username_var, age_var, password_var)
         )
         confirm_button.grid(pady=20)
-
-    def update_listbox(self):
-        self.listbox.delete(0, END)
-        for user in Use.ulist:
-            self.listbox.insert(END, user['name'])
+        ret_button = self.cbutton('Return', 12, 5, 9, self.add_menu_frame, lambda: self.show_menu(self.main_menu_frame))
+        ret_button.grid(pady=10)
 
     def remove_userGUI(self):
         selected = self.listbox.curselection()
@@ -178,7 +181,7 @@ class NoteManagerGui:
 
         # Botão de remoção
 
-        ret_button = self.cbutton('Remove Selected', 12, 5, 5, self.remo_menu_frame, lambda: self.remove_userGUI)
+        ret_button = self.cbutton('Remove Selected', 12, 5, 5, self.remo_menu_frame, lambda: self.remove_userGUI())
         ret_button.grid(pady=10)
         ret_button = self.cbutton('Return', 12, 5, 6, self.remo_menu_frame, lambda: self.show_menu(self.main_menu_frame))
         ret_button.grid(pady=10)
@@ -203,6 +206,7 @@ class NoteManagerGui:
             relief='flat')
 
         # Window Aspect
+        self.root.title('Note Manager by PGFerraz')
         self.root.geometry('800x600')
         self.root.rowconfigure(0, weight=1)
         self.root.columnconfigure(0, weight=1)       
