@@ -1,8 +1,8 @@
-import sys, os, string
+import sys, os, string, shutil, json
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from main_package.use_module import Use
 from tkinter import *
-from tkinter import ttk
+from tkinter import ttk, messagebox, simpledialog
 
 
 class NoteManagerGui:
@@ -10,7 +10,7 @@ class NoteManagerGui:
         self.root = Tk()
         self.create_main_menu()
         self.create_addu_menu()
-        self.create_remu_menu()
+        self.create_remo_menu()
         self.show_menu(self.main_menu_frame)
         self.root.mainloop()
 
@@ -101,9 +101,91 @@ class NoteManagerGui:
         )
         confirm_button.grid(pady=20)
 
-    def create_remu_menu(self):
-        # Placeholder for remove menu creation
-        pass
+    def update_listbox(self):
+        self.listbox.delete(0, END)
+        for user in Use.ulist:
+            self.listbox.insert(END, user['name'])
+
+    def remove_userGUI(self):
+        selected = self.listbox.curselection()
+        if not selected:
+            self.status_label.config(text="No user selected.", foreground="red")
+            return
+
+        name = self.listbox.get(selected[0])
+        psw = self.password_var.get().strip()
+
+        user = next((u for u in Use.ulist if u['name'].lower() == name.lower()), None)
+
+        if not psw:
+            self.status_label.config(text="Please enter a password.", foreground="red")
+            return
+
+        if user and user['password'] == psw:
+            # Confirmar remoção com botão/ação direta
+            path = os.path.join('userdata', f'{name}_data')
+            if os.path.isdir(path):
+                try:
+                    shutil.rmtree(path)
+                except Exception as e:
+                    self.status_label.config(text=f"Error removing folder: {e}", foreground="red")
+                    return
+
+            Use.ulist = [u for u in Use.ulist if u["name"].lower() != name.lower()]
+            self.update_listbox()
+
+            try:
+                with open(r'userdata\user.json', 'r') as arq:
+                    dataj = json.load(arq)
+                datajf = [d for d in dataj if d.get('name', '').lower() != name.lower()]
+                with open(r'userdata\user.json', 'w') as arq:
+                    json.dump(datajf, arq, indent=4)
+            except Exception as e:
+                self.status_label.config(text=f"Error updating JSON: {e}", foreground="red")
+                return
+
+            self.password_var.set('')
+            self.status_label.config(text=f"User '{name}' removed successfully.", foreground="green")
+        else:
+            self.status_label.config(text="Authentication failed.", foreground="red")
+
+    def create_remo_menu(self):
+        self.remo_menu_frame = ttk.Frame(self.root, style='dark_mode.TFrame')
+        self.remo_menu_frame.grid(row=0, column=0, sticky="nsew")
+        self.remo_menu_frame.rowconfigure(0, weight=1)
+        self.remo_menu_frame.rowconfigure(10, weight=1)
+        self.remo_menu_frame.columnconfigure(0, weight=1)
+        self.remo_menu_frame.columnconfigure(10, weight=1)
+
+        # Título
+        remo_label = ttk.Label(self.remo_menu_frame, text="Remove an User Menu", style='Main_text.TLabel')
+        remo_label.grid(column=5, row=0, pady=20, sticky='ns')
+
+        # Lista de usuários
+        self.listbox = Listbox(self.remo_menu_frame, height=10, width=40, background='#1c1515', foreground='#ebd3d6')
+        self.listbox.grid(column=5, row=1, pady=10)
+
+        # Campo de senha
+        self.password_var = StringVar()
+        psw_label = ttk.Label(self.remo_menu_frame, text="Enter Password:", style='Main_text.TLabel')
+        psw_label.grid(column=5, row=2, sticky='n')
+        psw_entry = ttk.Entry(self.remo_menu_frame, textvariable=self.password_var, show='*', style='Custom.TEntry')
+        psw_entry.grid(column=5, row=3, pady=5, sticky='n')
+
+        # Mensagem de status
+        self.status_label = ttk.Label(self.remo_menu_frame, text="", style='Main_text.TLabel', font=("Arial", 10, "bold"))
+        self.status_label.grid(column=5, row=4, pady=10, sticky='n')
+
+        # Botão de remoção
+
+        ret_button = self.cbutton('Remove Selected', 12, 5, 5, self.remo_menu_frame, lambda: self.remove_userGUI)
+        ret_button.grid(pady=10)
+        ret_button = self.cbutton('Return', 12, 5, 6, self.remo_menu_frame, lambda: self.show_menu(self.main_menu_frame))
+        ret_button.grid(pady=10)
+        self.update_listbox()
+
+        
+        
 
 
     def create_main_menu(self):
@@ -138,7 +220,6 @@ class NoteManagerGui:
         main_label.grid(column=5, row=0, pady=20, sticky='n')
 
         # Buttons
-        button1 = self.cbutton('Add an User ➕', 12, 5, 5, self.main_menu_frame, lambda: self.show_menu(self.add_menu_frame))
-
-
-app = NoteManagerGui()
+        button1 = self.cbutton('Add an User ➕', 12, 5, 1, self.main_menu_frame, lambda: self.show_menu(self.add_menu_frame))
+        button1.grid(pady=10)
+        button2 = self.cbutton('Remove a User ❌', 12, 5, 2, self.main_menu_frame, lambda: self.show_menu(self.remo_menu_frame))
