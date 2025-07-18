@@ -1,0 +1,5 @@
+User Pedro registered at : Fri Jul 18 09:08:31 2025
+- Name : Pedro
+- Age : 20User Pedro registered at : Fri Jul 18 09:23:06 2025
+- Name : Pedro
+- Age : 20

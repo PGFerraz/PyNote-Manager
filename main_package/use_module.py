@@ -29,13 +29,13 @@ class Use:
             'password': self.password
         })
 
-        os.makedirs(f'userdata\\{self.name}_data', exist_ok=True)
-        with open(f'userdata\\{self.name}_data\\{self.name}_main.txt', 'a') as f:
+        os.makedirs(f'userdata/{self.name}_data', exist_ok=True)
+        with open(f'userdata/{self.name}_data/{self.name}_main.txt', 'a') as f:
             f.write(f'User {self.name} registered at : {time.ctime()}\n'
                 f'- Name : {self.name}\n'
                 f'- Age : {self.age}\n')
 
-        with open(r'userdata\\user.json', 'w') as f:
+        with open(f'userdata/user.json', 'w') as f:
             json.dump(Use.ulist, f, indent=4)
 
     def registration(self):
@@ -65,8 +65,8 @@ class Use:
             'password': self.password
         })
 
-        os.makedirs(f'userdata\\{self.name}_data', exist_ok=True)
-        with open(f'userdata\\{self.name}_data\\{self.name}_main.txt', 'a') as f:
+        os.makedirs(f'userdata\{self.name}_data', exist_ok=True)
+        with open(f'userdata\{self.name}_data\{self.name}_main.txt', 'a') as f:
             f.write(f'User {self.name} registered at : {time.ctime()}\n'
                     f'- Name : {self.name}\n'
                     f'- Age : {self.age}\n')

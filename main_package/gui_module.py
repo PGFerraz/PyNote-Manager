@@ -6,17 +6,25 @@ from tkinter import ttk, messagebox, simpledialog
 
 
 class NoteManagerGui:
+
     def __init__(self):
         self.root = Tk()
         self.create_main_menu()
         self.create_addu_menu()
         self.create_remo_menu()
+        self.create_login_menu()
+        self.temp_user = StringVar()
         self.show_menu(self.main_menu_frame)
         self.root.mainloop()
-
     # Menu call function
+
     def show_menu(self, frame):
         frame.tkraise()
+
+    def show_profile_menu(self, name):
+        self.temp_user = name
+        self.create_profile_menu(name)
+        self.show_menu(self.profile_menu_frame)
 
     # Button Creator
     def cbutton(self, text, size, co, ro, cframe, funct):
@@ -138,10 +146,10 @@ class NoteManagerGui:
             self.update_listbox()
 
             try:
-                with open(r'userdata\user.json', 'r') as arq:
+                with open(r'userdata/user.json', 'r') as arq:
                     dataj = json.load(arq)
                 datajf = [d for d in dataj if d.get('name', '').lower() != name.lower()]
-                with open(r'userdata\user.json', 'w') as arq:
+                with open(r'userdata/user.json', 'w') as arq:
                     json.dump(datajf, arq, indent=4)
             except Exception as e:
                 self.status_label.config(text=f"Error updating JSON: {e}", foreground="red")
@@ -187,8 +195,71 @@ class NoteManagerGui:
         ret_button.grid(pady=10)
         self.update_listbox()
 
+    def autentication(self):
+
+        name = self.lusername_var.get().strip()
+        psw = self.lpassword_var.get().strip()
+
+        if not name or not psw:
+            messagebox.showerror("Error", "Username and password cannot be empty.")
+            return
+        if not Use.ulist:
+            messagebox.showerror("Error", "No users registered.")
+            return
+        # Check if the user exists and the password matches
+        for user in Use.ulist:
+            if user['name'] ==  name:
+                if user['password'] == psw:
+                    self.show_profile_menu(name)
+    
+    def create_login_menu(self): # Add an User Menu
+        # Main Frame
+        self.login_menu_frame = ttk.Frame(self.root, style='dark_mode.TFrame')
+        self.login_menu_frame.grid(row=0, column=0, sticky="nsew")
+        self.login_menu_frame.rowconfigure(0, weight=1) # Seting Row and Column limit
+        self.login_menu_frame.rowconfigure(10, weight=1)
+        self.login_menu_frame.columnconfigure(0, weight=1)
+        self.login_menu_frame.columnconfigure(10, weight=1)
+
+        # Main Label
+        login_label = ttk.Label(self.login_menu_frame, text="Log-In", style='Main_text.TLabel')
+        login_label.grid(column=5, row=0, pady=20, sticky='ns')
+
+        # Username Entry Box Label
+        login_uname_text = ttk.Label(self.login_menu_frame, text="Username:", style='Main_text.TLabel')
+        login_uname_text.grid(column=5, row=2, pady=10, sticky='n')
+        self.lusername_var = StringVar()
+        login_uname = ttk.Entry(self.login_menu_frame, textvariable=self.lusername_var, style='Custom.TEntry')
+        login_uname.grid(column=5, row=3, sticky='n')
         
-        
+        # Password Entry Box Label
+        login_upsw_text = ttk.Label(self.login_menu_frame, text="Password:", style='Main_text.TLabel')
+        login_upsw_text.grid(column=5, row=6, pady=10, sticky='n')
+        self.lpassword_var = StringVar()
+        login_upsw = ttk.Entry(self.login_menu_frame, textvariable=self.lpassword_var, style='Custom.TEntry', show='*')
+        login_upsw.grid(column=5, row=7, sticky='n')
+
+        login_button = self.cbutton('Confirm', 12, 5, 8, self.login_menu_frame, lambda: self.autentication())
+        login_button.grid(pady=10)
+        ret_button = self.cbutton('Return', 12, 5, 9,self.login_menu_frame, lambda: self.show_menu(self.main_menu_frame))
+        ret_button.grid(pady=10)
+
+    def create_profile_menu(self, name): # Profile Menu
+        self.profile_menu_frame = ttk.Frame(self.root, style='dark_mode.TFrame')
+        self.profile_menu_frame.grid(row=0, column=0, sticky="nsew")
+        self.profile_menu_frame.rowconfigure(0, weight=1)
+        self.profile_menu_frame.rowconfigure(10, weight=1)
+        self.profile_menu_frame.columnconfigure(0, weight=1)
+        self.profile_menu_frame.columnconfigure(10, weight=1)
+
+        # Title
+        profile_label = ttk.Label(self.profile_menu_frame, text=f"{name} Profile Menu", style='Main_text.TLabel')
+        profile_label.grid(column=5, row=0, pady=20, sticky='ns')
+
+    
+
+        # Update the listbox with current users
+        self.update_listbox()
 
 
     def create_main_menu(self):
@@ -227,3 +298,6 @@ class NoteManagerGui:
         button1 = self.cbutton('Add an User ➕', 12, 5, 1, self.main_menu_frame, lambda: self.show_menu(self.add_menu_frame))
         button1.grid(pady=10)
         button2 = self.cbutton('Remove a User ❌', 12, 5, 2, self.main_menu_frame, lambda: self.show_menu(self.remo_menu_frame))
+        button2.grid(pady=10)
+        button3 = self.cbutton('Log-In', 12, 5, 3, self.main_menu_frame, lambda: self.show_menu(self.login_menu_frame))
+        button3.grid(pady=10)
