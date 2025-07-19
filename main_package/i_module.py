@@ -22,6 +22,7 @@ def create_note(user):
         top_menu('📝  Creating a Note', '=')
         content = ''
         arc_name = input('\n\nEnter Note Name -> ')
+        arc_path = os.join.path('userdata', f'{user}_data', arc_name)
         os.system('cls')
         top_menu('Write the note in the field below. To exit type "exitnow" and press enter', '=')
         print('\n')
@@ -30,13 +31,13 @@ def create_note(user):
             if line.strip().upper() == 'EXITNOW':
                 break
             content += line + '\n'
-            with open(f'userdata\{user}_data\{arc_name}', 'w', encoding='utf-8') as f:
+            with open(arc_path, 'w', encoding='utf-8') as f:
                 f.write(content)
         break
             
 def show_notes(user):
     os.system('cls')
-    notes_folder = f'userdata\{user}_data'
+    notes_folder = os.path.join('userdata', f'{user}_data')
     top_menu('📖  Select a note to view', '=')
     print('\nNotes Found: ',*listdir(notes_folder), sep='\t')
     resp = input('\nEnter note name -> ')
@@ -44,7 +45,8 @@ def show_notes(user):
         os.system('cls')
         top_menu(f'{resp}', '=')
         print('\n')
-        f = open(f'{notes_folder}\{resp}', 'r', encoding='utf-8')
+        resp_path = os.path.join('userdata', f'{user}_data', resp)
+        f = open(resp_path, 'r', encoding='utf-8')
         print(f.read())
         input('Press enter to return to Profile Menu...')
     else:
@@ -52,12 +54,13 @@ def show_notes(user):
 
 def delete_note(user):
     os.system('cls')
-    notes_folder = f'userdata\{user}_data'
+    notes_folder = os.path.join('userdata', f'{user}_data')
     top_menu('🗑️  Select a note to delete', '=')
     print('\nNotes Found: ',*listdir(notes_folder), sep='\t')
     resp = input('\nEnter note name -> ')
+    resp_path = os.path.join(notes_folder, resp)
     if resp in listdir(notes_folder):
-        os.remove(f'{notes_folder}\{resp}')
+        os.remove(resp_path)
     else:
         input(f'Note {resp} not found, press enter to return to profile menu...')
 
@@ -84,6 +87,7 @@ def profile_interface(user):
             break
 
 def remove_user():
+    ud_json = os.path.join('userdata', 'user.json')
     while True:
         os.system('cls')
         top_menu('❌  Remove an User', '=')
@@ -112,10 +116,10 @@ def remove_user():
                     Use.ulist = [d for d in Use.ulist if d.get("name", "").lower() != duser_lower]
                     # Updating JSON file
                     try:
-                        with open(r'userdata\user.json', 'r') as arq:
+                        with open(ud_json, 'r') as arq:
                             dataj = json.load(arq)
                         datajf = [d for d in dataj if d.get('name', '').lower() != duser_lower]
-                        with open(r'userdata\user.json', 'w') as arq:
+                        with open(ud_json, 'w') as arq:
                             json.dump(datajf, arq, indent=4)
                         print(f"User '{duser}' successfully removed.")
                     except Exception as e:

@@ -6,6 +6,7 @@ from tkinter import ttk, messagebox, simpledialog
 
 
 class NoteManagerGui:
+    ud_json = os.path.join('userdata', 'user.json')
 
     def __init__(self):
         self.root = Tk()
@@ -16,11 +17,12 @@ class NoteManagerGui:
         self.temp_user = StringVar()
         self.show_menu(self.main_menu_frame)
         self.root.mainloop()
-    # Menu call function
 
+    # Function that calls a menu
     def show_menu(self, frame):
         frame.tkraise()
 
+    # Calls the user profile menu
     def show_profile_menu(self, name):
         self.temp_user = name
         self.create_profile_menu(name)
@@ -43,11 +45,13 @@ class NoteManagerGui:
         button.grid(column=co, row=ro, sticky='n')
         return button
 
+    # List Box update function
     def update_listbox(self):
         self.listbox.delete(0, END)
         for user in Use.ulist:
             self.listbox.insert(END, user['name'])
 
+    # Calls the user registration function "registrationGUI()"
     def validation(self, username_var, age_var, password_var):
         username = username_var.get()
         age = age_var.get()
@@ -68,6 +72,7 @@ class NoteManagerGui:
             age_var.set('')
             password_var.set('')
 
+    # Menu for adding a new user
     def create_addu_menu(self): # Add an User Menu
         # Main Frame
         self.add_menu_frame = ttk.Frame(self.root, style='dark_mode.TFrame')
@@ -117,6 +122,7 @@ class NoteManagerGui:
         ret_button = self.cbutton('Return', 12, 5, 9, self.add_menu_frame, lambda: self.show_menu(self.main_menu_frame))
         ret_button.grid(pady=10)
 
+    # Function that removes an existing user
     def remove_userGUI(self):
         selected = self.listbox.curselection()
         if not selected:
@@ -146,10 +152,10 @@ class NoteManagerGui:
             self.update_listbox()
 
             try:
-                with open(r'userdata/user.json', 'r') as arq:
+                with open(self.ud_json, 'r') as arq:
                     dataj = json.load(arq)
                 datajf = [d for d in dataj if d.get('name', '').lower() != name.lower()]
-                with open(r'userdata/user.json', 'w') as arq:
+                with open(self.ud_json, 'w') as arq:
                     json.dump(datajf, arq, indent=4)
             except Exception as e:
                 self.status_label.config(text=f"Error updating JSON: {e}", foreground="red")
@@ -160,6 +166,7 @@ class NoteManagerGui:
         else:
             self.status_label.config(text="Authentication failed.", foreground="red")
 
+    # Remove user menu
     def create_remo_menu(self):
         self.remo_menu_frame = ttk.Frame(self.root, style='dark_mode.TFrame')
         self.remo_menu_frame.grid(row=0, column=0, sticky="nsew")
@@ -168,33 +175,35 @@ class NoteManagerGui:
         self.remo_menu_frame.columnconfigure(0, weight=1)
         self.remo_menu_frame.columnconfigure(10, weight=1)
 
-        # Título
+        # Label
         remo_label = ttk.Label(self.remo_menu_frame, text="Remove an User Menu", style='Main_text.TLabel')
         remo_label.grid(column=5, row=0, pady=20, sticky='ns')
 
-        # Lista de usuários
+        # Listbox
         self.listbox = Listbox(self.remo_menu_frame, height=10, width=40, background='#1c1515', foreground='#ebd3d6')
         self.listbox.grid(column=5, row=1, pady=10)
 
-        # Campo de senha
+        # password entry
         self.password_var = StringVar()
         psw_label = ttk.Label(self.remo_menu_frame, text="Enter Password:", style='Main_text.TLabel')
         psw_label.grid(column=5, row=2, sticky='n')
         psw_entry = ttk.Entry(self.remo_menu_frame, textvariable=self.password_var, show='*', style='Custom.TEntry')
         psw_entry.grid(column=5, row=3, pady=5, sticky='n')
 
-        # Mensagem de status
+        # status message
         self.status_label = ttk.Label(self.remo_menu_frame, text="", style='Main_text.TLabel', font=("Arial", 10, "bold"))
         self.status_label.grid(column=5, row=4, pady=10, sticky='n')
 
-        # Botão de remoção
-
-        ret_button = self.cbutton('Remove Selected', 12, 5, 5, self.remo_menu_frame, lambda: self.remove_userGUI())
-        ret_button.grid(pady=10)
+        # Remove button
+        remo_button = self.cbutton('Remove Selected', 12, 5, 5, self.remo_menu_frame, lambda: self.remove_userGUI())
+        remo_button.grid(pady=10)
+        
+        # Return button
         ret_button = self.cbutton('Return', 12, 5, 6, self.remo_menu_frame, lambda: self.show_menu(self.main_menu_frame))
         ret_button.grid(pady=10)
         self.update_listbox()
 
+    # Function for user login authentication
     def autentication(self):
 
         name = self.lusername_var.get().strip()
@@ -212,7 +221,8 @@ class NoteManagerGui:
                 if user['password'] == psw:
                     self.show_profile_menu(name)
     
-    def create_login_menu(self): # Add an User Menu
+    # User Log-In menu
+    def create_login_menu(self):
         # Main Frame
         self.login_menu_frame = ttk.Frame(self.root, style='dark_mode.TFrame')
         self.login_menu_frame.grid(row=0, column=0, sticky="nsew")
@@ -244,6 +254,7 @@ class NoteManagerGui:
         ret_button = self.cbutton('Return', 12, 5, 9,self.login_menu_frame, lambda: self.show_menu(self.main_menu_frame))
         ret_button.grid(pady=10)
 
+    # User profile menu
     def create_profile_menu(self, name): # Profile Menu
         self.profile_menu_frame = ttk.Frame(self.root, style='dark_mode.TFrame')
         self.profile_menu_frame.grid(row=0, column=0, sticky="nsew")
@@ -251,17 +262,13 @@ class NoteManagerGui:
         self.profile_menu_frame.rowconfigure(10, weight=1)
         self.profile_menu_frame.columnconfigure(0, weight=1)
         self.profile_menu_frame.columnconfigure(10, weight=1)
-
         # Title
         profile_label = ttk.Label(self.profile_menu_frame, text=f"{name} Profile Menu", style='Main_text.TLabel')
         profile_label.grid(column=5, row=0, pady=20, sticky='ns')
-
-    
-
         # Update the listbox with current users
         self.update_listbox()
 
-
+    # Main menu
     def create_main_menu(self):
         # Setting Style Themes
         sty = ttk.Style()
