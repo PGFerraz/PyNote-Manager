@@ -1,7 +1,8 @@
-# Main file to launch the graphical interface
+import os
+import json
 from main_package import Use
-from main_package import NoteManagerGui
-import os, json
+from main_package.gui.gui_main_module import NoteManagerGui
+
 ud_json = os.path.join('userdata', 'user.json')
 
 # Load JSON file
@@ -10,8 +11,10 @@ try:
         data = json.load(f)
         Use.ulist = data
 except (FileNotFoundError, json.JSONDecodeError):
-    Use.lusers = []
-os.system('cls')
+    Use.ulist = []
 
-# Run GUI
-app = NoteManagerGui()
+os.system('cls' if os.name == 'nt' else 'clear')
+
+if __name__ == '__main__':
+    app = NoteManagerGui()
+    app.mainloop()

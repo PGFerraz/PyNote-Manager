@@ -1,0 +1,3 @@
+User Guts registered at : Sun Jul 20 12:23:01 2025
+- Name : Guts
+- Age : 20

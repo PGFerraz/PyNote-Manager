@@ -1,5 +1,5 @@
 # Main file to launch the terminal interface
-from main_package import main_user_interface
+from main_package.cli.i_module import main_user_interface
 from main_package import Use
 import os, json
 ud_json = os.path.join('userdata', 'user.json')
