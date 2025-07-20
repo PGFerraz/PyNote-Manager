@@ -19,18 +19,16 @@ A simple and extensible Python application for creating and managing notes, with
 
 ## Project Structure
 MainFolder/
-- main.py #launch the application
-- main_gui.py # Launch GUI
-- userdata/ # Stores user data and note files
-- userdata/user.json # Registered users list
-- main_package/ # Core functionality modules
-- mainpackage/__init__.py
-- main_package/i_module.py # Main interface and logic
-- main_package/use_module.py # User class and data handling
-- main_package/gui_module.py # GUI interface (Tkinter)
-
-## Notes
-- User passwords are currently stored in plain text (hashing coming soon).
-- No external libraries are used — fully built with Python's standard library.
-- This project was created as a way to practice and deepen my understanding of Python.
-- It helped me explore concepts such as file handling, object-oriented programming, modularization, terminal UI and GUI design.
+- main.py               # Launch the application (terminal mode)
+- main_gui.py           # Launch the graphical user interface (GUI)
+- userdata/             # Stores user data and note files
+- userdata/user.json    # Registered users list
+- main_package/         # Core functionality modules
+- main_package/__init__.py
+- main_package/i_module.py         # Main interface and logic (terminal)
+- main_package/use_module.py       # User class and data handling
+- main_package/gui/                # GUI-related modules (Tkinter)
+- main_package/gui/gui_main_module.py       # Main GUI window and menu
+- main_package/gui/gui_main_side_module.py  # Side menus for user add, remove, login
+- main_package/gui/gui_profile_module.py    # User profile menus
+- main_package/gui/gui_utils.py             # Shared GUI utility functions
