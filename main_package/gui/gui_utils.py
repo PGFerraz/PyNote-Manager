@@ -4,12 +4,19 @@ import shutil
 import string
 from tkinter import END, messagebox
 from main_package.use_module import Use
+from os import listdir
 
 def update_listbox(listbox):
     listbox.delete(0, END)
     for user in Use.ulist:
         listbox.insert(END, user['name'])
 
+def update_note_listbox(listbox, name):
+    notes_folder = os.path.join('userdata', f'{name}_main')
+    listbox.delete(0, END)
+    for note in listdir(notes_folder):
+        listbox.insert(END, note)
+        
 def validation(username_var, age_var, password_var, show_menu_func, main_menu_frame, update_listbox_func):
     username = username_var.get()
     age = age_var.get()

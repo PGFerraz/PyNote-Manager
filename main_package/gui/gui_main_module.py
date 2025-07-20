@@ -1,6 +1,7 @@
 import os
+from os import listdir
 import tkinter as tk
-from tkinter import ttk, Button, StringVar
+from tkinter import ttk, Button, StringVar, END
 from main_package.use_module import Use
 from main_package.gui.gui_main_side_module import GuiMainSideMenus
 from main_package.gui.gui_profile_module import GuiProfileMenus
@@ -10,9 +11,9 @@ class NoteManagerGui(tk.Tk):
 
     def __init__(self):
         super().__init__()
-        self.side_menus = GuiMainSideMenus(self, self)
-        self.profile_menus = GuiProfileMenus(self, self.show_main_menu, self.show_main_menu)
         self.temp_user = StringVar()
+        self.side_menus = GuiMainSideMenus(self, self)
+        self.profile_menus = GuiProfileMenus(self, self.show_main_menu, self.show_main_menu, self.temp_user)
         self.create_main_menu()
         self.show_menu(self.main_menu_frame)
 
