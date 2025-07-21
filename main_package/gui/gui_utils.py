@@ -2,9 +2,41 @@ import os
 import json
 import shutil
 import string
+import tkinter as tk
+from tkinter import *
+from tkinter.ttk import *
+from PIL import Image, ImageTk
 from tkinter import END, messagebox
 from main_package.use_module import Use
 from os import listdir
+
+_custom_main_menu_logo_path = os.path.join('assets','img', 'custom_main_menu_logo_v1.png')
+_custom_button_image_path = os.path.join('assets','img', 'custom_button_v1.png')
+_custom_button_msize_image_path = os.path.join('assets', 'img', 'custom_button_v1_msize.png')
+loaded_images = []
+
+# Buton Creator
+def cbutton(text, size, co, ro, cframe, funct, bsize=None, custom_button_image_path=_custom_button_image_path):
+    if bsize == 'medium':
+        custom_button_image_path = _custom_button_msize_image_path
+
+    custom_button_image = tk.PhotoImage(file=custom_button_image_path)
+    loaded_images.append(custom_button_image)
+
+    button = tk.Button(
+        cframe,
+        text=text,
+        image=custom_button_image,
+        compound="center",
+        bg="#121212", fg="#ebd3d6",
+        activebackground="#121212", activeforeground="#ab6a72",
+        borderwidth=0, width=256, height=144,
+        command=funct,
+        font=("Segoe UI", int(size), "bold"),
+        relief='flat'
+    )
+    button.grid(column=co, row=ro, sticky='n')
+    return button
 
 def update_listbox(listbox):
     listbox.delete(0, END)
@@ -80,6 +112,7 @@ def remove_userGUI(listbox, password_var, status_label, ud_json, update_listbox_
         status_label.config(text="Authentication failed.", foreground="red")
 
 def autentication(lusername_var, lpassword_var, show_profile_menu_func):
+    tempLoginPath = os.path.join('userdata', 'tl.json')
     name = lusername_var.get().strip()
     psw = lpassword_var.get().strip()
 
@@ -89,6 +122,18 @@ def autentication(lusername_var, lpassword_var, show_profile_menu_func):
     if not Use.ulist:
         messagebox.showerror("Error", "No users registered.")
         return
+    for user in Use.ulist:
+        if user['name'] == name and user['password'] == psw:
+            Use.temp_login.append({'name': name, 'psw': psw})
+            with open(tempLoginPath, 'w') as f:
+                json.dump(Use.temp_login, f, indent=4)
+            show_profile_menu_func(name)
+            print(name)
+            return
+
+def autentication2(lusername_var, lpassword_var, show_profile_menu_func):
+    name = lusername_var
+    psw = lpassword_var
     for user in Use.ulist:
         if user['name'] == name and user['password'] == psw:
             show_profile_menu_func(name)

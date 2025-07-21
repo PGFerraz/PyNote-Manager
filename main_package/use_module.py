@@ -6,6 +6,7 @@ import json
 class Use:
 
     ulist = []  # List containing all currently registered users
+    temp_login = []
     ud_json_path = os.path.join('userdata', 'user.json')  # Path to JSON file
 
     @classmethod
