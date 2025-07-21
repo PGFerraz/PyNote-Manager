@@ -45,7 +45,7 @@ class NoteManagerGui(tk.Tk):
         sty.configure('dark_mode.TFrame', background='#2e2223')
         sty.configure('Main_text.TLabel', background='#2e2223', foreground='#ebd3d6', font=("Arial", 24, "bold"))
         sty.configure('Custom.TEntry', foreground='#ebd3d6', fieldbackground='#1c1515', padding=5, font=('Arial', 14))
-
+        sty.configure('BackgroundOnly.TEntry', background="#1c1515", fieldbackground='BackgroundOnly.TEntry')
         self.title('Note Manager by PGFerraz')
         self.geometry('800x600')
         self.rowconfigure(0, weight=1)

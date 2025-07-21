@@ -1,3 +1,4 @@
+# Main file to launch the GUI interface
 import os
 import json
 from main_package import Use
