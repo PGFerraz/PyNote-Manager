@@ -1,6 +1,7 @@
 # PyNote-Manager
-A simple and extensible Python application for creating and managing notes, with support for both command-line and graphical interfaces.
+<img width="322" height="266" alt="Image" src="https://github.com/user-attachments/assets/88f0cf82-4904-4b61-aaa8-d8625f697740" />
 
+A simple and extensible Python application for creating and managing notes, with support for both command-line and graphical interfaces.
 ## Features
 
 - ✅ User registration with secure password validation
@@ -15,12 +16,14 @@ A simple and extensible Python application for creating and managing notes, with
 
 ## Requirements
 - Python 3.7 or higher
+- pillow 11.3.0
 - Works on Windows, Linux, and macOS (a terminal with Unicode support is recommended)
 
 ## Project Structure
 MainFolder/
 - main.py               # Launch the application (terminal mode)
 - main_gui.py           # Launch the graphical user interface (GUI)
+- assets/               # img files
 - userdata/             # Stores user data and note files
 - userdata/user.json    # Registered users list
 - main_package/         # Core functionality modules
